@@ -6,7 +6,6 @@ Maps tweet characteristics to Fogg dimensions: Motivation, Ability, and Prompt
 import pandas as pd
 import numpy as np
 import re
-from textblob import TextBlob
 from nltk.sentiment import SentimentIntensityAnalyzer
 import nltk
 

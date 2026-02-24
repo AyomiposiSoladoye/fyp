@@ -672,7 +672,8 @@ elif page == "🔮 Make Predictions":
                                     tweet=tweet_text,
                                     prediction=prediction_text,
                                     probability=probability[1],
-                                    features=features
+                                    features=features,
+                                    stream=False
                                 )
                                 st.markdown(summary)
                             except Exception as e:
@@ -833,7 +834,8 @@ elif page == "📈 Analysis":
                     summary = st.session_state.groq_summarizer.summarize_model_results(
                         metrics=best_model.metrics,
                         feature_importance_df=feature_importance_df,
-                        dimension_importance=dict(zip(dim_df['Dimension'], dim_df['Total Importance']))
+                        dimension_importance=dict(zip(dim_df['Dimension'], dim_df['Total Importance'])),
+                        stream=False
                     )
                     st.markdown(summary)
                 except Exception as e:

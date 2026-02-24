@@ -1,6 +1,6 @@
 """
 Groq AI Summarizer for Virality Prediction Results
-Uses Groq API for fast AI-powered insights
+Uses Groq API for fast AI-powered insights with streaming support
 """
 
 from groq import Groq
@@ -9,21 +9,21 @@ from groq import Groq
 class GroqSummarizer:
     """
     Summarizes prediction results using Groq API
-    Provides insights about tweet virality predictions
+    Provides insights about tweet virality predictions with streaming support
     """
     
-    def __init__(self, api_key: str, model: str = "mixtral-8x7b-32768"):
+    def __init__(self, api_key: str, model: str = "llama-3.1-8b-instant"):
         """
         Initialize Groq client
         
         Args:
             api_key: Groq API key
-            model: Model to use (mixtral-8x7b-32768, llama-2-70b-chat, etc.)
+            model: Model to use (llama-3.1-8b-instant, mixtral-8x7b-32768, gemma-7b-it)
         """
         self.client = Groq(api_key=api_key)
         self.model = model
     
-    def summarize_prediction(self, tweet: str, prediction: str, probability: float, features: dict) -> str:
+    def summarize_prediction(self, tweet: str, prediction: str, probability: float, features: dict, stream: bool = False) -> str:
         """
         Generate AI summary of a tweet virality prediction
         
@@ -32,6 +32,7 @@ class GroqSummarizer:
             prediction: "Viral" or "Non-Viral"
             probability: Probability score (0-1)
             features: Dictionary of extracted features
+            stream: Whether to use streaming (not used in Streamlit version)
         
         Returns:
             String summary from Groq
@@ -57,11 +58,12 @@ Provide a 2-3 sentence expert analysis of why this tweet would or would not go v
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7,
             max_tokens=300,
+            stream=False,
         )
         
         return message.choices[0].message.content
     
-    def summarize_model_results(self, metrics: dict, feature_importance_df, dimension_importance: dict) -> str:
+    def summarize_model_results(self, metrics: dict, feature_importance_df, dimension_importance: dict, stream: bool = False) -> str:
         """
         Generate research summary of model performance
         
@@ -69,6 +71,7 @@ Provide a 2-3 sentence expert analysis of why this tweet would or would not go v
             metrics: Model performance metrics (accuracy, precision, recall, f1, auc)
             feature_importance_df: DataFrame with top features
             dimension_importance: Dict with dimension importance scores
+            stream: Whether to use streaming (not used in Streamlit version)
         
         Returns:
             String summary from Groq
@@ -99,6 +102,7 @@ Provide a 3-4 sentence research insight about what drives Twitter virality accor
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7,
             max_tokens=400,
+            stream=False,
         )
         
         return message.choices[0].message.content
