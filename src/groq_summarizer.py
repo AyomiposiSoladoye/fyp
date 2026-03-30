@@ -37,27 +37,47 @@ class GroqSummarizer:
         Returns:
             String summary from Groq
         """
+        # Build feature description dynamically from actual features
+        feature_descriptions = []
+        for key, value in sorted(features.items()):
+            if isinstance(value, float):
+                feature_descriptions.append(f"- {key.replace('_', ' ').title()}: {value:.2f}")
+            else:
+                feature_descriptions.append(f"- {key.replace('_', ' ').title()}: {value}")
+        
+        features_text = "\n".join(feature_descriptions[:10])  # Limit to top 10 for clarity
+        
+        # Create specific guidance based on prediction
+        prediction_guidance = f"""This tweet is predicted to be {prediction.lower()} with {probability:.1%} confidence.
+
+IMPORTANT: Provide a SPECIFIC analysis of THIS PARTICULAR TWEET. Do not use generic templates.
+- Reference specific words, tone, or hashtags from the tweet above
+- Explain EXACTLY which features helped or hurt this prediction
+- Suggest CONCRETE improvements if it's non-viral
+- Highlight SPECIFIC strengths if it's viral
+- DO NOT repeat the same analysis for different tweets"""
+        
         prompt = f"""You are a social media analyst using the Fogg Behavior Model (Motivation × Ability × Prompt = Behavior).
 
-Analyze this tweet prediction:
+ANALYZE THIS SPECIFIC TWEET:
 
 **Tweet:** "{tweet}"
 
 **Prediction:** {prediction}
 **Confidence:** {probability:.1%}
 
-Based on the Fogg model dimensions:
-- Motivation: {features.get('sentiment_score', 0):.2f} (emotional appeal)
-- Ability: {features.get('avg_word_length', 0):.2f} (clarity/readability)
-- Prompt: {features.get('hashtag_count', 0)} hashtags, {features.get('mention_count', 0)} mentions (CTAs)
+**Extracted Features for This Tweet:**
+{features_text}
 
-Provide a 2-3 sentence expert analysis of why this tweet would or would not go viral, focusing on behavioral triggers."""
+{prediction_guidance}
+
+Provide a 3-4 sentence expert analysis that is specific to this actual tweet, NOT generic advice."""
 
         message = self.client.chat.completions.create(
             model=self.model,
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7,
-            max_tokens=300,
+            max_tokens=350,
             stream=False,
         )
         

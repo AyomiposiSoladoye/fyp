@@ -639,8 +639,10 @@ elif page == "🔮 Make Predictions":
                     
                     # Make prediction
                     best_model = st.session_state.model
-                    prediction = best_model.model.predict(feature_scaled)[0]
                     probability = best_model.model.predict_proba(feature_scaled)[0]
+                    
+                    # Apply custom threshold of 0.5
+                    prediction = 1 if probability[1] >= 0.5 else 0
                     
                     st.markdown("---")
                     st.markdown("### Prediction Result")
