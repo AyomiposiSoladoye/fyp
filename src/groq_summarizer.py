@@ -23,6 +23,45 @@ class GroqSummarizer:
         self.client = Groq(api_key=api_key)
         self.model = model
     
+    def analyze_tweet_virality(self, tweet: str, prediction: str, probability: float) -> str:
+        """
+        Analyze tweet virality using Groq AI
+        Simple method for streamlit app predictions
+        
+        Args:
+            tweet: The tweet text
+            prediction: "Viral" or "Non-Viral"
+            probability: Probability score (0-1)
+        
+        Returns:
+            String analysis from Groq
+        """
+        prompt = f"""You are a social media expert analyzing tweet virality using behavioral science principles.
+
+ANALYZE THIS SPECIFIC TWEET:
+
+**Tweet:** "{tweet}"
+
+**Prediction:** {prediction}
+**Confidence:** {probability:.1%}
+
+Provide a concise 2-3 sentence analysis explaining:
+- Why this tweet is predicted to be {prediction.lower()}
+- Specific elements in the tweet that support this prediction
+- One actionable suggestion to improve virality if needed
+
+Be specific to THIS actual tweet, not generic advice."""
+
+        message = self.client.chat.completions.create(
+            model=self.model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.7,
+            max_tokens=500,
+            stream=False,
+        )
+        
+        return message.choices[0].message.content
+    
     def summarize_prediction(self, tweet: str, prediction: str, probability: float, features: dict, stream: bool = False) -> str:
         """
         Generate AI summary of a tweet virality prediction
@@ -96,7 +135,7 @@ Provide a 3-4 sentence expert analysis that is specific to this actual tweet, NO
         Returns:
             String summary from Groq
         """
-        top_features = feature_importance_df.head(5)['Feature'].tolist()
+        top_features = feature_importance_df.head(5)['feature'].tolist()
         
         prompt = f"""You are a research analyst examining a Twitter virality prediction model using the Fogg Behavior Model.
 

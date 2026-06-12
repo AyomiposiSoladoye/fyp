@@ -1,0 +1,56 @@
+{
+  "feature_columns": [
+    "sentiment_compound",
+    "sentiment_positive",
+    "sentiment_negative",
+    "emotion_score",
+    "emoji_count",
+    "has_emoji",
+    "exclamation_count",
+    "question_count",
+    "capital_ratio",
+    "tweet_length",
+    "word_count",
+    "avg_word_length",
+    "has_url",
+    "url_count",
+    "has_quote",
+    "is_short",
+    "is_long",
+    "hashtag_count",
+    "has_hashtag",
+    "mention_count",
+    "has_mention",
+    "cta_presence",
+    "is_question"
+  ],
+  "motivation_features": [
+    "sentiment_compound",
+    "sentiment_positive",
+    "sentiment_negative",
+    "emotion_score",
+    "emoji_count",
+    "has_emoji",
+    "exclamation_count",
+    "question_count",
+    "capital_ratio"
+  ],
+  "ability_features": [
+    "tweet_length",
+    "word_count",
+    "avg_word_length",
+    "has_url",
+    "url_count",
+    "has_quote",
+    "is_short",
+    "is_long"
+  ],
+  "prompt_features": [
+    "hashtag_count",
+    "has_hashtag",
+    "mention_count",
+    "has_mention",
+    "cta_presence",
+    "is_question"
+  ]
+}
