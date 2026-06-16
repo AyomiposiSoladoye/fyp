@@ -1,0 +1,19 @@
+TWITTER VIRALITY PREDICTION - TRAINING REPORT
+======================================================================
+
+Models Trained:
+  - random_forest
+  - gradient_boosting
+  - logistic_regression
+
+Model Performance:
+                     accuracy  precision  recall        f1  roc_auc
+random_forest            0.78   0.791667    0.76  0.775510   0.9014
+gradient_boosting        0.76   0.760000    0.76  0.760000   0.9070
+logistic_regression      0.73   0.716981    0.76  0.737864   0.8478
+
+Best Model: RANDOM_FOREST
+F1 Score: 0.7755
+Accuracy: 0.7800
+Precision: 0.7917
+Recall: 0.7600
