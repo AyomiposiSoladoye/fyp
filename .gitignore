@@ -45,5 +45,4 @@ Thumbs.db
 
 # Project specific
 results/
-models/*.pkl
 *.log
